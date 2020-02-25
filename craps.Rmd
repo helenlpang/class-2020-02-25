@@ -1,0 +1,42 @@
+---
+title: "Craps"
+author: "Helen Pang"
+date: "2/25/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+```{r}
+diceroll <- function(n){
+  sample(x = 1:6, size=n, replace=TRUE)
+}
+roll_2 <- function(){
+  diceroll(1) + diceroll(1)
+}
+
+craps <- function(n) {
+  map_int(1:n, ~ roll_2())
+}
+
+add_dice <- function(n=1) {
+  stopifnot(is.numeric(n))
+  sum(diceroll(n))
+}
+
+roll_dice <- function(n=1){
+  stopifnot(is.numeric(n))
+  map_int(rep(2,n), add_dice)
+}
+
+map_int(1:10, ~ roll_2())
+
+plot_data <- craps(1000) %>% 
+  as.data.frame()
+
+ggplot(plot_data, aes(.)) + geom_histogram(binwidth=1, color="white")
+```
+
+
